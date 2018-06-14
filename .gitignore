@@ -76,6 +76,9 @@ setuptools-*
 nohup.out
 .coverage
 .tox
+.vscode/
+settings.json
+points.py
 
 # pyenv
 .python-version
