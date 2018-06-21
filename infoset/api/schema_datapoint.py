@@ -26,13 +26,7 @@ class Datapoint(SQLAlchemyObjectType, DatapointAttribute):
     class Meta:
         model = DatapointModel
         interfaces = (relay.Node, )
-
-
-class DatapointQuery(graphene.ObjectType):
-    node = relay.Node.Field()
-    datapoint = relay.Node.Field(Datapoint)
-    all_datapoints = SQLAlchemyConnectionField(Datapoint)
-
+        
 
 class DatapointInput(graphene.InputObjectType, DatapointAttribute):
     """Arguments to create datapoint."""
@@ -50,13 +44,12 @@ class CreateDatapoint(graphene.Mutation):
     def mutate(self, info, input):
         data = graphene_utils.input_to_dictionary(input)
         data['ts_created'] = datetime.utcnow()
-        
-
         _datapoint = DatapointModel(**data)
         db_session.add(_datapoint)
         db_session.commit()
 
         return CreateDatapoint(_datapoint=_datapoint)
+    
 
 class UpdateDatapointInput(graphene.InputObjectType, DatapointAttribute):
 
@@ -78,11 +71,3 @@ class UpdateDatapoint(graphene.Mutation):
         _datapoint = db_session.query(DatapointModel).filter_by(id=data['id']).first()
 
         return UpdateDatapoint(_datapoint=_datapoint)
-
-class Mutation(graphene.ObjectType):
-    createDatapoint = CreateDatapoint.Field()
-    updateDatapoint = UpdateDatapoint.Field()
-
-schema = graphene.Schema(query=DatapointQuery, mutation = Mutation)
-
-
