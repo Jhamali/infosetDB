@@ -17,9 +17,6 @@ class Data(SQLAlchemyObjectType, DataAttribute):
         interfaces = (relay.Node, )
 
 
-
-
-
 class DataInput(graphene.InputObjectType, DataAttribute):
     """Arguments to create data."""
     pass
@@ -35,8 +32,6 @@ class CreateData(graphene.Mutation):
 
     def mutate(self, info, input):
         data = graphene_utils.input_to_dictionary(input)
-        
-
         _data = DataModel(**data)
         db_session.add(_data)
         db_session.commit()
@@ -55,11 +50,9 @@ class UpdateData(graphene.Mutation):
 
     def mutate(self, info, input):
         data = graphene_utils.input_to_dictionary(input)
-
         _data = db_session.query(DataModel).filter_by(id=data['id'])
         _data.update(data)
         db_session.commit()
         _data = db_session.query(DataModel).filter_by(id=data['id']).first()
 
         return UpdateData(_data=_data)
-
