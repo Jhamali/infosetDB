@@ -5,21 +5,14 @@ from infoset.api import graphene_utils
 from infoset.db.db_orm import db_session, DeviceAgent as DeviceAgentModel
 from datetime import datetime
 
-class DeviceAgentAttribute:
-    
+class DeviceAgentAttribute:   
 
     idx_deviceagent =  graphene.ID(description="")
-
-    idx_device = graphene.Float(description="")
-    
+    idx_device = graphene.Float(description="")    
     idx_agent = graphene.Float(description="")
-
     last_timestamp = graphene.Float(description="")
-
     enabled = graphene.Float(description="")
-
     ts_modified = graphene.DateTime(description="")
-
     ts_created = graphene.DateTime(description="")
 
 
@@ -27,9 +20,6 @@ class DeviceAgent(SQLAlchemyObjectType, DeviceAgentAttribute):
     class Meta:
         model = DeviceAgentModel
         interfaces = (relay.Node, )
-
-
-
 
 
 class DeviceAgentInput(graphene.InputObjectType, DeviceAgentAttribute):
@@ -55,10 +45,12 @@ class CreateDeviceAgent(graphene.Mutation):
         db_session.commit()
 
         return CreateDeviceAgent(_deviceagent=_deviceagent)
+    
 
 class UpdateDeviceAgentInput(graphene.InputObjectType, DeviceAgentAttribute):
 
     _deviceagent = graphene.ID(required=True, description="Unique identifier of the DeviceAgent")
+    
 
 class UpdateDeviceAgent(graphene.Mutation):
     _deviceagent = graphene.Field(lambda: DeviceAgent, description="DeviceAgent updated by this mutation.")
@@ -69,7 +61,6 @@ class UpdateDeviceAgent(graphene.Mutation):
     def mutate(self, info, input):
         data = graphene_utils.input_to_dictionary(input)
         data['ts_modified'] = datetime.utcnow()
-
         _deviceagent = db_session.query(DeviceAgentModel).filter_by(id=data['id'])
         _deviceagent.update(data)
         db_session.commit()
