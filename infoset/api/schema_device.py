@@ -7,7 +7,6 @@ from datetime import datetime
 
 class DeviceAttribute:
     
-
     idx_device =  graphene.ID(description="")
 
     devicename = graphene.String(description="")
@@ -25,9 +24,6 @@ class Device(SQLAlchemyObjectType, DeviceAttribute):
     class Meta:
         model = DeviceModel
         interfaces = (relay.Node, )
-
-
-
 
 
 class DeviceInput(graphene.InputObjectType, DeviceAttribute):
@@ -75,4 +71,3 @@ class UpdateDevice(graphene.Mutation):
         _device = db_session.query(DeviceModel).filter_by(id=data['id']).first()
 
         return UpdateDevice(_device=_device)
-
