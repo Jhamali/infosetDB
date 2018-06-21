@@ -41,6 +41,7 @@ class CreateData(graphene.Mutation):
 class UpdateDataInput(graphene.InputObjectType, DataAttribute):
 
     id = graphene.ID(required=True, description="Unique identifier of the Data")
+    
 
 class UpdateData(graphene.Mutation):
     _data = graphene.Field(lambda: Data, description="Data updated by this mutation.")
