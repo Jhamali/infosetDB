@@ -5,8 +5,7 @@ from infoset.api import graphene_utils
 from infoset.db.db_orm import db_session, AgentName as AgentNameModel
 from datetime import datetime
 
-class AgentNameAttribute:
-    
+class AgentNameAttribute:    
 
     idx_agentname =  graphene.ID(description="")
 
@@ -23,9 +22,6 @@ class AgentName(SQLAlchemyObjectType, AgentNameAttribute):
     class Meta:
         model = AgentNameModel
         interfaces = (relay.Node, )
-
-
-
 
 
 class AgentNameInput(graphene.InputObjectType, AgentNameAttribute):
@@ -72,4 +68,3 @@ class UpdateAgentName(graphene.Mutation):
         _agentname = db_session.query(AgentNameModel).filter_by(id=data['id']).first()
 
         return UpdateAgentName(_agentname=_agentname)
-
