@@ -8,13 +8,9 @@ from datetime import datetime
 class AgentNameAttribute:    
 
     idx_agentname =  graphene.ID(description="")
-
     name = graphene.String(description="")
-
     enabled = graphene.Float(description="")
-
     ts_modified = graphene.DateTime(description="")
-
     ts_created = graphene.DateTime(description="")
 
 
@@ -51,6 +47,7 @@ class CreateAgentName(graphene.Mutation):
 class UpdateAgentNameInput(graphene.InputObjectType, AgentNameAttribute):
 
     _agentname = graphene.ID(required=True, description="Unique identifier of the AgentName")
+    
 
 class UpdateAgentName(graphene.Mutation):
     _agentname = graphene.Field(lambda: AgentName, description="AgentName updated by this mutation.")
@@ -61,7 +58,6 @@ class UpdateAgentName(graphene.Mutation):
     def mutate(self, info, input):
         data = graphene_utils.input_to_dictionary(input)
         data['ts_modified'] = datetime.utcnow()
-
         _agentname = db_session.query(AgentNameModel).filter_by(id=data['id'])
         _agentname.update(data)
         db_session.commit()
