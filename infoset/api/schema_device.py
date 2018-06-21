@@ -8,15 +8,10 @@ from datetime import datetime
 class DeviceAttribute:
     
     idx_device =  graphene.ID(description="")
-
     devicename = graphene.String(description="")
-
     description = graphene.String(description="")
-
     enabled = graphene.Float(description="")
-
     ts_modified = graphene.DateTime(description="")
-
     ts_created = graphene.DateTime(description="")
 
 
